@@ -13,8 +13,16 @@ classifiers = [
 dependencies = [
     "requests",
     'importlib-metadata; python_version<"3.10"',
+    "authlib >=0.15.1",
+    "unpaddedbase64 >=2.1.0",
+    "jinja2 >=3.0",
+    "pymacaroons >=0.13.0",
+    "twisted >=18.9.0"
 ]
 
 [build-system]
 requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+ALONE = ["matrix-synapse>=1.98.0"]
