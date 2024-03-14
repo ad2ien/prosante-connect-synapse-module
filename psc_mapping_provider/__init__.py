@@ -248,7 +248,7 @@ class OidcHandler:
             self._sso_handler.render_error(request, "mismatching_session", str(e))
             return
 
-        logger.info("Received OIDC callback for IdP %s", session_data.idp_id)
+        logger.info("Received OIDC callbacks for IdP %s", session_data.idp_id)
 
         oidc_provider = self._providers.get(session_data.idp_id)
         if not oidc_provider:
