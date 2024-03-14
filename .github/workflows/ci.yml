@@ -27,8 +27,8 @@ jobs:
           python -m site
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install --upgrade tox
-      - name: "Run tox lint targets for ${{ matrix.python-version }}"
-        run: "python -m tox -e check_isort,pep8,packaging"
+      - name: "Run tox tests
+        run: "python -m tox"
 
   build:
     # This is similar to the job in `release.yml`, but it does NOT upload to PyPI.
