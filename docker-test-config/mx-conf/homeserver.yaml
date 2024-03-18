@@ -51,7 +51,7 @@ oidc_providers:
     client_secret: "M5nXccmhTMzDldFs2FYQFTLJVAw8yjLk"
     scopes: ["openid", "profile"]
     user_mapping_provider:
-#      module: synapse.agent_connect_mapping.ProsanteConnectMappingProvider
+      module: synapse.psc_mapping_provider.ProsanteConnectMappingProvider
       config:
         localpart_template: "{{ user.preferred_username }}"
         display_name_template: "{{ user.name }}"
