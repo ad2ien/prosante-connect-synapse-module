@@ -12,7 +12,7 @@ services:
       - POSTGRES_PASSWORD=secret
       - POSTGRES_MULTIPLE_DATABASES=synapse,keycloak
     healthcheck:
-      test: ["CMD-SHELL", "sh -c 'pg_isready -U root -d keycloak'"]
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U root -d keycloak'" ]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -24,13 +24,6 @@ services:
       - "8443:8443"
     environment:
       - KC_HOSTNAME=idp.local
-#      - KC_VENDOR=postgres
-#      - KC_DB=postgres
-#      - KC_DB_URL_HOST=keycloak
-#      - KC_DB_USERNAME=root
-#      - KC_DB_SCHEMA=public
-#      - KC_DB_URL_DATABASE=db
-#      - KC_DB_PASSWORD=secret
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
       - KEYCLOAK_LOGLEVEL=INFO
@@ -41,7 +34,6 @@ services:
       - ./docker-test-config/keycloak-2fa-email-authenticator.jar:/opt/keycloak/providers/keycloak-2fa-email-authenticator.jar
     command:
       - start
-#      - --optimized
       - --import-realm
       - --https-certificate-file=/opt/keycloak/certificate.pem
       - --https-certificate-key-file=/opt/keycloak/privatekey.pem
@@ -49,9 +41,9 @@ services:
 
   keycloak-health:
     image: curlimages/curl
-    command: ["sh", "-c", "while true; do sleep 1; done"]
+    command: [ "sh", "-c", "while true; do sleep 1; done" ]
     healthcheck:
-      test: ["CMD-SHELL", "curl --head -fsS --insecure --http1.1  https://keycloak:8443/health/ready"]
+      test: [ "CMD-SHELL", "curl --head -fsS --insecure --http1.1  https://keycloak:8443/health/ready" ]
       interval: 15s
       timeout: 30s
       retries: 5
