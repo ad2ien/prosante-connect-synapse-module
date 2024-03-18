@@ -18,7 +18,7 @@ services:
       retries: 3
 
   keycloak:
-    image: keycloak/keycloak:latest
+    image: keycloak/keycloak:23.0.3
     ports:
       - "8080:8080"
       - "8443:8443"
@@ -38,6 +38,8 @@ services:
       - ./docker-test-config/kc-conf/certificate.pem:/opt/keycloak/certificate.pem:ro
       - ./docker-test-config/kc-conf/privatekey.pem:/opt/keycloak/privatekey.pem:ro
       - ./docker-test-config/eimis-realm.json:/opt/keycloak/data/import/eimis-realm.json:ro
+      - ./docker-test-config/realm-export-local.json:/opt/keycloak/data/import/realm-export-local.json:ro
+      - ./docker-test-config/keycloak-2fa-email-authenticator.jar:/opt/keycloak/providers/keycloak-2fa-email-authenticator.jar
     command:
       - start
 #      - --optimized
@@ -45,10 +47,6 @@ services:
       - --https-certificate-file=/opt/keycloak/certificate.pem
       - --https-certificate-key-file=/opt/keycloak/privatekey.pem
       - --health-enabled=true
-    develop:
-      watch:
-        - action: rebuild
-          path: ./psc_mapping_provider
 
   keycloak-health:
     image: curlimages/curl
@@ -68,6 +66,7 @@ services:
       - ./docker-test-config/mx-data:/data
       - ./docker-test-config/mx-conf:/mx-conf/
       - ./docker-test-config/kc-conf/certificate.pem:/mx-conf/cert/certificate.pem:ro
+      - ./psc_mapping_provider/__init__.py:/usr/local/lib/python3.11/site-packages/synapse/psc_mapping_provider.py
     depends_on:
       db:
         condition: service_healthy
@@ -76,6 +75,14 @@ services:
     environment:
       - SYNAPSE_CONFIG_PATH=/mx-conf/homeserver.yaml
       - SSL_CERT_FILE=/mx-conf/cert/certificate.pem
+    develop:
+      watch:
+        - path: ./psc_mapping_provider
+          action: sync+restart
+          target: /usr/local/lib/python3.11/site-packages/synapse
+        - path: ./docker-test-config/mx-conf
+          action: sync+restart
+          target: /mx-conf
 
   element:
     container_name: element-local

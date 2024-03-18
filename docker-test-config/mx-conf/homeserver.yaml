@@ -46,9 +46,9 @@ oidc_providers:
   - idp_id: keycloak
     idp_name: "EIMIS Connect"
     skip_verification: true
-    issuer: "https://keycloak:8443/realms/eimis-realm"
-    client_id: "eimis-synapse"
-    client_secret: "I_eat_kiwis_with_the_skin_on"
+    issuer: "https://keycloak:8443/realms/local"
+    client_id: "synapse"
+    client_secret: "M5nXccmhTMzDldFs2FYQFTLJVAw8yjLk"
     scopes: ["openid", "profile"]
     user_mapping_provider:
 #      module: synapse.agent_connect_mapping.ProsanteConnectMappingProvider
