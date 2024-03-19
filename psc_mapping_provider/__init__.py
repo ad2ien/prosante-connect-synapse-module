@@ -1,3 +1,4 @@
+import logging
 from typing import (
     Dict,
     Optional, Any, List,
@@ -10,6 +11,8 @@ from synapse.config import ConfigError
 from synapse.handlers.oidc import OidcMappingProvider, Token, UserAttributeDict
 from synapse.types import map_username_to_mxid_localpart
 from synapse.util.templates import _localpart_from_email_filter
+
+logger = logging.getLogger(__name__)
 
 
 # Used to clear out "None" values in templates
@@ -108,6 +111,7 @@ class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingC
             self, userinfo: UserInfo, token: Token, failures: int
     ) -> UserAttributeDict:
         localpart = None
+        logger.info("Mapping user attributes with userinfo %s", userinfo)
 
         if self._config.localpart_template:
             localpart = self._config.localpart_template.render(user=userinfo).strip()

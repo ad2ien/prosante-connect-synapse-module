@@ -31,7 +31,6 @@ services:
       - ./docker-test-config/kc-conf/certificate.pem:/opt/keycloak/certificate.pem:ro
       - ./docker-test-config/kc-conf/privatekey.pem:/opt/keycloak/privatekey.pem:ro
       - ./docker-test-config/realm-export-local.json:/opt/keycloak/data/import/realm-export-local.json:ro
-      - ./docker-test-config/keycloak-2fa-email-authenticator.jar:/opt/keycloak/providers/keycloak-2fa-email-authenticator.jar
     command:
       - start
       - --import-realm
