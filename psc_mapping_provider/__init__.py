@@ -1,12 +1,9 @@
 import logging
-from typing import (
-    Dict,
-    Optional, Any, List,
-)
+from typing import Any, Dict, List, Optional
 
 import attr
 from authlib.oidc.core import UserInfo
-from jinja2 import Template, Environment
+from jinja2 import Environment, Template
 from synapse.config import ConfigError
 from synapse.handlers.oidc import OidcMappingProvider, Token, UserAttributeDict
 from synapse.types import map_username_to_mxid_localpart
@@ -40,14 +37,13 @@ class ProsanteConnectMappingConfig:
 
 
 class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingConfig]):
-
     def __init__(self, parsed_config: ProsanteConnectMappingConfig):
         self._config = parsed_config
 
     @staticmethod
     def parse_config(config: dict) -> ProsanteConnectMappingConfig:
         def parse_template_config_with_claim(
-                option_name: str, default_claim: str
+            option_name: str, default_claim: str
         ) -> Template:
             template_name = f"{option_name}_template"
             template = config.get(template_name)
@@ -108,10 +104,10 @@ class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingC
         return self._config.subject_template.render(user=userinfo).strip()
 
     async def map_user_attributes(
-            self, userinfo: UserInfo, token: Token, failures: int
+        self, userinfo: UserInfo, token: Token, failures: int
     ) -> UserAttributeDict:
         localpart = None
-        logger.info("Mapping user attributes with userinfo %s", userinfo)
+        logger.info("PSC Mapping user attributes with userinfo %s", userinfo)
 
         if self._config.localpart_template:
             localpart = self._config.localpart_template.render(user=userinfo).strip()
