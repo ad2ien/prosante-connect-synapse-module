@@ -142,3 +142,59 @@ class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingC
             picture=picture,
             confirm_localpart=self._config.confirm_localpart,
         )
+
+def get_code_profession(json_obj):
+    jsonpath_expr = parse('$.SubjectRefPro.exercices[*].codeProfession')
+    matches = [match.value for match in jsonpath_expr.find(json_obj)]
+    return matches
+
+def get_activity_from_code(code: str) -> str:
+    activities = {
+        "21": "Pharmacien",
+        "26": "Audioprothésiste",
+        "28": "Opticien-Lunetier",
+        "31": "Assistant dentaire",
+        "32": "Physicien médical",
+        "35": "Aide-soignant",
+        "36": "Ambulancier",
+        "37": "Auxiliaire de puériculture",
+        "38": "Préparateur en pharmacie hospitalière",
+        "39": "Préparateur en pharmacie (officine)",
+        "40": "Chirurgien-Dentiste",
+        "50": "Sage-Femme",
+        "60": "Infirmier",
+        "69": "Infirmier psychiatrique",
+        "70": "Masseur-Kinésithérapeute",
+        "80": "Pédicure-Podologue",
+        "81": "Orthoprothésiste",
+        "82": "Podo-Orthésiste",
+        "83": "Orthopédiste-Orthésiste",
+        "84": "Oculariste",
+        "85": "Epithésiste",
+        "86": "Technicien de laboratoire médical",
+        "91": "Orthophoniste",
+        "92": "Orthoptiste",
+        "94": "Ergothérapeute",
+        "95": "Diététicien",
+        "96": "Psychomotricien",
+        "98": "Manipulateur ERM",
+        "71": "Ostéopathe",
+        "72": "Psychothérapeute",
+        "73": "Chiropracteur",
+        "93": "Psychologue",
+        "97": "Conseiller en génétique",
+        "41": "Assistant de service social",
+        "42": "Auxiliaire de vie sociale",
+        "43": "Technicien de l'intervention sociale et familiale",
+        "44": "Conseiller en économie sociale et familiale",
+        "45": "Médiateur familial",
+        "46": "Assistant familial",
+        "47": "Aide médico-psychologique (AMP)",
+        "48": "Moniteur éducateur",
+        "49": "Educateur de jeunes enfants",
+        "51": "Educateur spécialisé",
+        "52": "Educateur technique spécialisé",
+        "53": "Accompagnant éducatif et social",
+    }
+
+    return activities.get(code, "Unknown activity")
