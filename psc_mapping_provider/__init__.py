@@ -128,6 +128,16 @@ class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingC
         if display_name == "":
             display_name = None
 
+        if (
+            "SubjectRefPro" in userinfo
+            and "exercices" in userinfo["SubjectRefPro"]
+            and len(userinfo["SubjectRefPro"]["exercices"]) > 0
+            and "codeProfession" in userinfo["SubjectRefPro"]["exercices"][0]
+        ):
+            display_name += " - " + get_activity_from_code(
+                userinfo["SubjectRefPro"]["exercices"][0]["codeProfession"]
+            )
+
         emails: List[str] = []
         email = render_template_field(self._config.email_template)
         if email:
@@ -143,10 +153,6 @@ class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingC
             confirm_localpart=self._config.confirm_localpart,
         )
 
-def get_code_profession(json_obj):
-    jsonpath_expr = parse('$.SubjectRefPro.exercices[*].codeProfession')
-    matches = [match.value for match in jsonpath_expr.find(json_obj)]
-    return matches
 
 def get_activity_from_code(code: str) -> str:
     activities = {
