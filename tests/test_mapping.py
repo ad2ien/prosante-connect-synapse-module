@@ -21,7 +21,7 @@ class ProsanteConnectMappingProviderTestCase(aiounittest.AsyncTestCase):
     async def test_real_test(self) -> None:
         mapper = ProsanteConnectMappingProvider(self.config)
         result = await mapper.map_user_attributes(self.user_info, None, 0)
-        assert result["display_name"] == "Fistinien Grominoch"
+        assert result["display_name"] == "Fistinien Grominoch - Pédicure-Podologue"
         assert result["localpart"] == "ans20231122132732"
 
 
