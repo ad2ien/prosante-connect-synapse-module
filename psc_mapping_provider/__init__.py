@@ -156,6 +156,8 @@ class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingC
 
 def get_activity_from_code(code: str) -> str:
     activities = {
+        # https://mos.esante.gouv.fr/NOS/TRE_G15-ProfessionSante/TRE_G15-ProfessionSante.pdf
+        "10": "Médecin",
         "21": "Pharmacien",
         "26": "Audioprothésiste",
         "28": "Opticien-Lunetier",
@@ -180,19 +182,30 @@ def get_activity_from_code(code: str) -> str:
         "86": "Technicien de laboratoire médical",
         "91": "Orthophoniste",
         "92": "Orthoptiste",
+        # "93": "Psychologue",
         "94": "Ergothérapeute",
         "95": "Diététicien",
         "96": "Psychomotricien",
         "98": "Manipulateur ERM",
-        "71": "Ostéopathe",
-        "72": "Psychothérapeute",
-        "73": "Chiropracteur",
-        "93": "Psychologue",
-        "97": "Conseiller en génétique",
+        # https://mos.esante.gouv.fr/NOS/TRE_R94-ProfessionSocial/TRE_R94-ProfessionSocial.pdf
+        "200": "Assistant de service social",
+        "201": "Auxiliaire de vie sociale",
+        "202": "Technicien de l'intervention sociale et familiale",
+        "203": "Conseiller en économie sociale et familiale",
+        "204": "Médiateur familial",
+        "205": "Assistant familial",
+        "206": "Aide médico-psychologique (AMP)",
+        "207": "Moniteur éducateur",
+        "208": "Educateur de jeunes enfants",
+        "209": "Educateur spécialisé",
+        "210": "Educateur technique spécialisé",
+        "211": "Aide à domicile Aide à domicile",
+        "212": "Assistant(e) maternel(le)",
+        "213": "Accompagnant éducatif et social",
         "41": "Assistant de service social",
         "42": "Auxiliaire de vie sociale",
         "43": "Technicien de l'intervention sociale et familiale",
-        "44": "Conseiller en économie sociale et familiale",
+        "44": "Conseiller en économie sociale et familiale Conseiller ESF",
         "45": "Médiateur familial",
         "46": "Assistant familial",
         "47": "Aide médico-psychologique (AMP)",
@@ -201,6 +214,17 @@ def get_activity_from_code(code: str) -> str:
         "51": "Educateur spécialisé",
         "52": "Educateur technique spécialisé",
         "53": "Accompagnant éducatif et social",
+        # https://mos.esante.gouv.fr/NOS/TRE_R95-UsagerTitre/TRE_R95-UsagerTitre.pdf
+        "171": "Ostéopathe",
+        "173": "Chiropracteur",
+        "172": "Psychothérapeute",
+        "193": "Psychologue",
+        "194": "Conseiller en génétique",
+        "71": "Ostéopathe",
+        "72": "Psychothérapeute",
+        "73": "Chiropracteur",
+        "93": "Psychologue",
+        "97": "Conseiller en génétique",
     }
 
-    return activities.get(code, "Unknown activity")
+    return activities.get(code, "PSC")
