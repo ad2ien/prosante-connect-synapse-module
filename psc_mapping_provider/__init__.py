@@ -34,6 +34,7 @@ class ProsanteConnectMappingConfig:
     email_template: Optional[Template]
     extra_attributes: Dict[str, Template]
     confirm_localpart: bool = False
+    default_display_name_suffix: str = ""
 
 
 class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingConfig]):
@@ -90,6 +91,7 @@ class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingC
         if not isinstance(confirm_localpart, bool):
             raise ConfigError("must be a bool", path=["confirm_localpart"])
 
+        default_display_name_suffix = config.get("default_display_name_suffix") or ""
         return ProsanteConnectMappingConfig(
             subject_template=subject_template,
             picture_template=picture_template,
@@ -98,6 +100,7 @@ class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingC
             email_template=email_template,
             extra_attributes=extra_attributes,
             confirm_localpart=confirm_localpart,
+            default_display_name_suffix=default_display_name_suffix,
         )
 
     def get_remote_user_id(self, userinfo: UserInfo) -> str:
@@ -137,6 +140,8 @@ class ProsanteConnectMappingProvider(OidcMappingProvider[ProsanteConnectMappingC
             display_name += " - " + get_activity_from_code(
                 userinfo["SubjectRefPro"]["exercices"][0]["codeProfession"]
             )
+        else:
+            display_name += self._config.default_display_name_suffix
 
         emails: List[str] = []
         email = render_template_field(self._config.email_template)

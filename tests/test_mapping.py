@@ -5,7 +5,6 @@ from psc_mapping_provider import ProsanteConnectMappingProvider
 
 class ProsanteConnectMappingProviderTestCase(aiounittest.AsyncTestCase):
     def setUp(self) -> None:
-        self.user_info = get_a_legit_psc_userinfo()
         self.config = ProsanteConnectMappingProvider.parse_config(
             {
                 "subject_template": "{{ user.sub }}",
@@ -15,13 +14,20 @@ class ProsanteConnectMappingProviderTestCase(aiounittest.AsyncTestCase):
                 "email_template": "{{ user.email }}",
                 "extra_attributes": {},
                 "confirm_localpart": False,
+                "default_display_name_suffix": " - not a doctor",
             }
         )
 
-    async def test_real_test(self) -> None:
+    async def test_real_psc_test(self) -> None:
         mapper = ProsanteConnectMappingProvider(self.config)
-        result = await mapper.map_user_attributes(self.user_info, None, 0)
+        result = await mapper.map_user_attributes(get_a_legit_psc_userinfo(), None, 0)
         assert result["display_name"] == "Fistinien Grominoch - Pédicure-Podologue"
+        assert result["localpart"] == "ans20231122132732"
+
+    async def test_real_non_psc_test(self) -> None:
+        mapper = ProsanteConnectMappingProvider(self.config)
+        result = await mapper.map_user_attributes(get_a_regular_userinfo(), None, 0)
+        assert result["display_name"] == "Fistinien Grominoch - not a doctor"
         assert result["localpart"] == "ans20231122132732"
 
 
@@ -91,6 +97,17 @@ def get_a_legit_psc_userinfo():
         "otherIds": [
             {"identifiant": "ANS20231122132732", "origine": "EDIT", "qualite": 1}
         ],
+        "SubjectNameID": "ANS20231122132732",
+        "family_name": "Grominoch",
+    }
+
+
+def get_a_regular_userinfo():
+    return {
+        "sub": "f:550dc1c8-d97b-4b1e-ac8c-8eb4471cf9dd:ANS20231122132732",
+        "preferred_username": "ANS20231122132732",
+        "codeCivilite": "M",
+        "given_name": "Fistinien",
         "SubjectNameID": "ANS20231122132732",
         "family_name": "Grominoch",
     }

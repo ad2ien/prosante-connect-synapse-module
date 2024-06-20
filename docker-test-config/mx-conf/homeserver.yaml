@@ -40,8 +40,7 @@ macaroon_secret_key: "PaA8zb1+pl+8R:us^A7.u~arj-7kEgiinJ4nyPH^^t#PR9Z1YI"
 form_secret: "IHQ3ArqBn&Rv=rS*MP,5a#dii@;;85b4a5AQd-v4XmDLY2bd4X"
 signing_key_path: "/data/matrix.local.signing.key"
 use_insecure_ssl_client_just_for_testing_do_not_use: true
-trusted_key_servers:
-  - server_name: "matrix.org"
+enable_set_displayname: false
 oidc_providers:
   - idp_id: keycloak
     idp_name: "EIMIS Connect"
@@ -55,6 +54,7 @@ oidc_providers:
       config:
         localpart_template: "{{ user.preferred_username }}"
         display_name_template: "{{ user.name }}"
+        default_display_name_suffix: " - not a doctor"
     backchannel_logout_enabled: true # Optional
 
 # vim:ft=yaml

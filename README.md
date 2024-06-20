@@ -3,13 +3,13 @@
 ![Matrix](https://img.shields.io/badge/matrix-000000?logo=Matrix&logoColor=white)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/eimis-ans/eimis-prosante-connect-module/lint.yml?label=lint&logo=github)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/eimis-ans/eimis-prosante-connect-module/test.yml?label=test&logo=github)
-![License](https://img.shields.io/badge/license-Apache%202-blue.svg)
+![License](https://img.shields.io/badge/license-Apache%202-blue.svg?logo=apache)
 
-A synapse module used by EIMIS to filter and map users registered through Pro Santé Connect
+A Synapse module used by EIMIS to map users registered through Pro Santé Connect. It will mainly add the main activity to display name. It can be used with other ID provider, the display name will then be suffixed with `default_display_name_suffix` config parameter.
 
 ## OIDC configuration
 
-Todo: how to configure keycloak to have the same token than PSC?
+Todo: how to configure Keycloak to have the same token than PSC?
 
 ## Synapse configuration
 
@@ -33,8 +33,11 @@ Todo: how to configure keycloak to have the same token than PSC?
         localpart_template: "{{ user.preferred_username }}"
         display_name_template: "{{ user.given_name }} {{ user.family_name }}"
         email_template: "{{ user.email }}"
+        default_display_name_suffix: " - not a doctor"
     backchannel_logout_enabled: true # Optional
 ```
+
+Usually used with `enable_set_displayname` set to false.
 
 ## User info
 
